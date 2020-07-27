@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Sat Jul 18 17:00:26 IST 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0173-61b0-88ca-000008c341f0 
+on database directory memory:/Users/cranajit/Desktop/LOCKDOWN/Eclipse/music/77928ffe-d7bc-4f62-9d0b-954c9e89194d with class loader org.springframework.boot.loader.LaunchedURLClassLoader@7daf6ecc 
+Loaded from jar:file:/Users/cranajit/Desktop/LOCKDOWN/Eclipse/music/target/music-0.0.1-SNAPSHOT.jar!/BOOT-INF/lib/derby-10.14.2.0.jar!/
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_231-b11
+user.dir=/Users/cranajit/Desktop/LOCKDOWN/Eclipse/music
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.14.6
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

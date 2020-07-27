@@ -1,0 +1,54 @@
+package com.cranajit.UMS.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cranajit.UMS.exceptions.UMSException;
+import com.cranajit.UMS.model.LoginRequestDTO;
+import com.cranajit.UMS.model.LoginResponseDTO;
+import com.cranajit.UMS.utils.JWTUtils;
+
+@Controller
+public class BaseController {
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	
+	@Autowired
+	private JWTUtils jWTUtils;
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
+
+	@ResponseBody
+	@RequestMapping(value = "/api/auth", method = RequestMethod.POST)
+	public ResponseEntity<LoginResponseDTO> getAuthenticate(@RequestBody LoginRequestDTO loginRequestDTO) {
+		try {
+			authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(loginRequestDTO.getUsername(),
+							loginRequestDTO.getPassword()));
+		} catch (BadCredentialsException e) {
+			throw new UMSException("Credentials are not correct");
+		}
+		UserDetails details = userDetailsService
+				.loadUserByUsername(loginRequestDTO.getUsername());
+		String token = jWTUtils.createToken(details);
+		return ResponseEntity.ok().body(new LoginResponseDTO(details.getUsername(), token));
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	public String getHome() {
+		return "HOME";
+	}
+}

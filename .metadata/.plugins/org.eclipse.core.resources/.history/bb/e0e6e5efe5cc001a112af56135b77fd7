@@ -1,0 +1,22 @@
+package com.cranajit.UMS.config;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScans;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+@Configuration
+@EnableTransactionManagement
+@EnableWebSecurity
+@PropertySource(value = "classpath:db.properties")
+@ComponentScans(value = {
+		@ComponentScan(basePackages = "com.cranajit.UMS.controller"),
+		@ComponentScan(basePackages = "com.cranajit.UMS.service"),
+		@ComponentScan(basePackages = "com.cranajit.UMS.repository"),
+		@ComponentScan(basePackages = "com.cranajit.UMS.utils"),
+})
+public class ApplicationConfig {
+
+}

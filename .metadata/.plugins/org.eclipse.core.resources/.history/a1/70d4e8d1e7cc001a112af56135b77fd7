@@ -1,0 +1,14 @@
+package com.cranajit.UMS.utils;
+
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+@Component
+public class JWTUtils {
+	
+	private final String SECRET_KEY = "UserManageMentSystem@1234$%";
+	
+	public String createToken(UserDetails userDetails) {
+		
+	}
+}

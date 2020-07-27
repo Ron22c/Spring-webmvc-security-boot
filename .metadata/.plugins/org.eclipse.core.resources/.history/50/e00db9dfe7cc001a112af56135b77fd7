@@ -1,0 +1,17 @@
+package com.cranajit.UMS.utils;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+@Component
+public class JWTUtils {
+	
+	private final String SECRET_KEY = "UserManageMentSystem@1234$%";
+	
+	public String createToken(UserDetails userDetails) {
+		Map<Stirng, Object> c = new HashMap<Stirng, Object>();
+	}
+}

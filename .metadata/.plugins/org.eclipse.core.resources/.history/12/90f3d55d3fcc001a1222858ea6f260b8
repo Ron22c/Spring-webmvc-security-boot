@@ -1,0 +1,8 @@
+package com.cranajit.security.model;
+
+import javax.persistence.Entity;
+
+@Entity(name = "user")
+public class User {
+
+}

@@ -1,0 +1,10 @@
+package com.cranajit.security.config;
+
+import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
+
+public class WebApplicationSecurityConfigiration extends AbstractSecurityWebApplicationInitializer{
+	private void WebApplicationSecurityConfigiration() {
+		super(WebSecurityConfig.class);
+	}
+
+}

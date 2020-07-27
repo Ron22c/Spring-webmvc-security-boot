@@ -1,0 +1,116 @@
+package com.cranajit.security.config;
+
+import static org.hibernate.cfg.AvailableSettings.DIALECT;
+import static org.hibernate.cfg.AvailableSettings.HBM2DDL_AUTO;
+import static org.hibernate.cfg.AvailableSettings.SHOW_SQL;
+
+import java.util.ArrayList;
+import java.util.Properties;
+
+import org.apache.commons.dbcp.BasicDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScans;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
+
+import com.cranajit.security.model.User;
+
+@Configuration
+@EnableWebSecurity
+@ComponentScans(value = { @ComponentScan(basePackages = "com.cranajit.security.controller"),
+		@ComponentScan(basePackages = "com.cranajit.security.service"),
+		@ComponentScan(basePackages = "com.cranajit.security.repository") })
+@PropertySource(value = "classpath:db.properties")
+public class ApplicationConfig extends WebSecurityConfigurerAdapter{
+	
+	@Autowired
+	private Environment env;
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(getPasswordEncoder());
+		// inMemoryAuthentication().withUser("user").password("pass").roles("USER").and();
+	}
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests()
+		.antMatchers("/admin").hasRole("ADMIN")
+		.antMatchers("/user").hasRole("USER")
+		.antMatchers("/").permitAll()
+		.and().formLogin();
+	}
+
+	@Bean
+	public PasswordEncoder getPasswordEncoder() {
+		return NoOpPasswordEncoder.getInstance();
+	}
+
+	@Bean
+	public MappingJackson2HttpMessageConverter getConverter() {
+		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+		converter.setPrettyPrint(true);
+		return converter;
+	}
+
+	@Bean
+	public RequestMappingHandlerAdapter getAdapter() {
+		RequestMappingHandlerAdapter adapter = new RequestMappingHandlerAdapter();
+
+		ArrayList<HttpMessageConverter<?>> converters = new ArrayList<HttpMessageConverter<?>>();
+		converters.add(getConverter());
+
+		adapter.setMessageConverters(converters);
+		return adapter;
+	}
+	
+	@Bean
+	public BasicDataSource getDataSource() {
+		BasicDataSource datasource = new BasicDataSource();
+		datasource.setDriverClassName(env.getProperty("mysql.driver_name"));
+		datasource.setUrl(env.getProperty("mysql.url"));
+		datasource.setUsername(env.getProperty("mysql.username"));
+		datasource.setPassword(env.getProperty("mysql.password"));
+		return datasource;
+	}
+	
+	@Bean
+	public LocalSessionFactoryBean getSessionFactory() {
+		LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
+		factoryBean.setDataSource(getDataSource());
+		factoryBean.setAnnotatedClasses(User.class);
+		
+		Properties props = new Properties();
+		props.put(DIALECT, env.getProperty("hibernate.dialect"));
+		props.put(SHOW_SQL, env.getProperty("hibernate.show_sql"));
+		props.put(HBM2DDL_AUTO, env.getProperty("hibernate.auto_ddl"));
+		
+		factoryBean.setHibernateProperties(props);
+		return factoryBean;
+	}
+	
+	@Bean
+	public HibernateTransactionManager getManager() {
+		HibernateTransactionManager manager = new HibernateTransactionManager();
+		manager.setSessionFactory(getSessionFactory().getObject());
+		return manager;
+	}
+}

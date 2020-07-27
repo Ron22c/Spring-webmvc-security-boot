@@ -1,0 +1,57 @@
+package com.cranajit.security.config;
+
+import java.util.ArrayList;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScans;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
+
+@Configuration
+@ComponentScans(value = {
+		@ComponentScan(basePackages = "com.cranajit.security.controller"),
+		@ComponentScan(basePackages = "com.cranajit.security.service"),
+		@ComponentScan(basePackages = "com.cranajit.security.repository")
+})
+@EnableWebSecurity
+@PropertySource(value = "classpath:db.properties")
+public class ApplicationConfig extends WebSecurityConfigurerAdapter{
+	
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.inMemoryAuthentication().withUser("user").password("pass")
+	}
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests().antMatchers("/**").hasRole("USER")
+		.antMatchers("user").hasRole("USER").and().formLogin();
+	}
+	
+	@Bean
+	public MappingJackson2HttpMessageConverter getConverter() {
+		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+		converter.setPrettyPrint(true);
+		return converter;
+	}
+	
+	@Bean
+	public RequestMappingHandlerAdapter getAdapter() {
+		RequestMappingHandlerAdapter adapter = new RequestMappingHandlerAdapter();
+		
+		ArrayList<HttpMessageConverter<?>> converters = new ArrayList<HttpMessageConverter<?>>();
+		converters.add(getConverter());
+		
+		adapter.setMessageConverters(converters);
+		return adapter;
+	}
+}

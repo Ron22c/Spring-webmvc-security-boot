@@ -1,0 +1,13 @@
+<classpath>
+  <container id="friendswithbenefits!org.eclipse.jst.j2ee.internal.web.container">
+    <entry id="/Users/cranajit/Desktop/LOCKDOWN/Eclipse/friendswithbenefits/WebContent/WEB-INF/lib/jackson-databind-2.11.0.jar">
+      <source-attachment-path>/Users/cranajit/Downloads/SPRING API FOR CREATING SERVER/spring-framework-master</source-attachment-path>
+    </entry>
+    <entry id="/Users/cranajit/Desktop/LOCKDOWN/Eclipse/friendswithbenefits/WebContent/WEB-INF/lib/spring-webmvc-5.2.7.RELEASE.jar">
+      <source-attachment-path>/Users/cranajit/Downloads/SPRING API FOR CREATING SERVER/spring-framework-master</source-attachment-path>
+    </entry>
+    <entry id="/Users/cranajit/Desktop/LOCKDOWN/Eclipse/friendswithbenefits/WebContent/WEB-INF/lib/spring-web-5.2.7.RELEASE.jar">
+      <source-attachment-path>/Users/cranajit/Downloads/SPRING API FOR CREATING SERVER/spring-framework-master</source-attachment-path>
+    </entry>
+  </container>
+</classpath>

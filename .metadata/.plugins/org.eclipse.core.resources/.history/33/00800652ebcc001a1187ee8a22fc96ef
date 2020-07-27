@@ -1,0 +1,84 @@
+package com.cranajit.UMS.config;
+
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScans;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
+
+@Configuration
+@EnableTransactionManagement
+@EnableWebSecurity
+@PropertySource(value = "classpath:db.properties")
+@ComponentScans(value = {
+		@ComponentScan(basePackages = "com.cranajit.UMS.controller"),
+		@ComponentScan(basePackages = "com.cranajit.UMS.service"),
+		@ComponentScan(basePackages = "com.cranajit.UMS.repository"),
+		@ComponentScan(basePackages = "com.cranajit.UMS.utils"),
+})
+public class ApplicationConfig extends WebSecurityConfigurerAdapter{
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService)
+		.passwordEncoder(getPasswordEncoder());
+	}
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.csrf().disable()
+		.authorizeRequests().antMatchers("/api/auth").permitAll()
+		.anyRequest().authenticated()
+		.and()
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+	}
+	
+	@Override
+	@Bean
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
+	
+	@Bean
+	public PasswordEncoder getPasswordEncoder() {
+		return NoOpPasswordEncoder.getInstance();
+	}
+	
+	@Bean
+	public MappingJackson2HttpMessageConverter getConverter() {
+		MappingJackson2HttpMessageConverter converter = 
+				new MappingJackson2HttpMessageConverter();
+		converter.setPrettyPrint(true);
+		return converter;
+	}
+	
+	@Bean
+	public RequestMappingHandlerAdapter getAdapter() {
+		RequestMappingHandlerAdapter adapter = new RequestMappingHandlerAdapter();
+		ArrayList<HttpMessageConverter<?>> list = new ArrayList<HttpMessageConverter<?>>();
+		list.add(getConverter());
+		
+		adapter.setMessageConverters(list);
+		return adapter;
+	}
+
+}

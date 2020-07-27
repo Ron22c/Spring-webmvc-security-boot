@@ -1,0 +1,13 @@
+127.0.0.1 - - [13/Jul/2020:00:12:55 +0530] "GET / HTTP/1.1" 404 751
+0:0:0:0:0:0:0:1 - - [13/Jul/2020:00:12:56 +0530] "GET /lovecalculator/ HTTP/1.1" 200 486
+0:0:0:0:0:0:0:1 - - [13/Jul/2020:00:13:03 +0530] "GET /lovecalculator/api/user HTTP/1.1" 200 69
+0:0:0:0:0:0:0:1 - - [13/Jul/2020:00:13:08 +0530] "GET /lovecalculator/ HTTP/1.1" 200 486
+127.0.0.1 - - [13/Jul/2020:00:20:35 +0530] "GET / HTTP/1.1" 404 751
+0:0:0:0:0:0:0:1 - - [13/Jul/2020:00:20:36 +0530] "GET /lovecalculator/ HTTP/1.1" 200 486
+0:0:0:0:0:0:0:1 - - [13/Jul/2020:00:28:09 +0530] "GET /lovecalculator/ HTTP/1.1" 200 486
+0:0:0:0:0:0:0:1 - - [13/Jul/2020:00:28:17 +0530] "GET /lovecalculator/api/user/1 HTTP/1.1" 404 682
+0:0:0:0:0:0:0:1 - - [13/Jul/2020:00:28:26 +0530] "GET /lovecalculator/api/user HTTP/1.1" 404 682
+0:0:0:0:0:0:0:1 - - [13/Jul/2020:00:28:27 +0530] "GET /lovecalculator/api/user HTTP/1.1" 404 682
+0:0:0:0:0:0:0:1 - - [13/Jul/2020:00:28:34 +0530] "GET /lovecalculator/api/user/%7B%7D HTTP/1.1" 500 771
+0:0:0:0:0:0:0:1 - - [13/Jul/2020:00:31:09 +0530] "GET /lovecalculator/api/user/1 HTTP/1.1" 200 69
+0:0:0:0:0:0:0:1 - - [13/Jul/2020:00:31:16 +0530] "GET /lovecalculator/api/user/1000 HTTP/1.1" 200 69

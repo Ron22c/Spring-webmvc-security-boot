@@ -1,0 +1,14 @@
+package com.cranajit.UMS.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+@Configuration
+@EnableTransactionManagement
+@EnableWebSecurity
+@PropertySource(value = "classpath:db.properties")
+public class ApplicationConfig {
+
+}

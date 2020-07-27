@@ -1,0 +1,5 @@
+package com.cranajit.security.service;
+
+public class UserService {
+
+}

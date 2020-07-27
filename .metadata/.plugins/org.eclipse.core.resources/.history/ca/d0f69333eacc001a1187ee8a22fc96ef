@@ -1,0 +1,5 @@
+package com.cranajit.UMS.exceptions;
+
+public class UMSException extends RuntimeException {
+
+}

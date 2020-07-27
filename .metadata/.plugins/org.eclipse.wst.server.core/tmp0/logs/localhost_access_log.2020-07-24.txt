@@ -1,0 +1,6 @@
+127.0.0.1 - - [24/Jul/2020:16:05:30 +0530] "GET / HTTP/1.1" 404 751
+0:0:0:0:0:0:0:1 - - [24/Jul/2020:16:05:31 +0530] "GET /usermanagermentservice/ HTTP/1.1" 403 653
+0:0:0:0:0:0:0:1 - - [24/Jul/2020:16:07:47 +0530] "POST /usermanagermentservice/api/auth HTTP/1.1" 200 189
+0:0:0:0:0:0:0:1 - - [24/Jul/2020:16:08:46 +0530] "GET /usermanagermentservice/home HTTP/1.1" 200 16
+0:0:0:0:0:0:0:1 - - [24/Jul/2020:16:10:14 +0530] "GET /usermanagermentservice/home HTTP/1.1" 403 653
+0:0:0:0:0:0:0:1 - - [24/Jul/2020:16:10:18 +0530] "GET /usermanagermentservice/home HTTP/1.1" 200 16

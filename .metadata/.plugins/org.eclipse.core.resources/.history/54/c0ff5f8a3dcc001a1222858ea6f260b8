@@ -1,0 +1,54 @@
+package com.cranajit.security.config;
+
+import java.util.ArrayList;
+
+import org.apache.commons.dbcp.BasicDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScans;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
+
+@Configuration
+@ComponentScans(value = { @ComponentScan(basePackages = "com.cranajit.security.controller"),
+		@ComponentScan(basePackages = "com.cranajit.security.service"),
+		@ComponentScan(basePackages = "com.cranajit.security.repository") })
+@PropertySource(value = "classpath:db.properties")
+public class ApplicationConfig {
+	
+	@Autowired
+	private Environment env;
+
+	@Bean
+	public MappingJackson2HttpMessageConverter getConverter() {
+		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+		converter.setPrettyPrint(true);
+		return converter;
+	}
+
+	@Bean
+	public RequestMappingHandlerAdapter getAdapter() {
+		RequestMappingHandlerAdapter adapter = new RequestMappingHandlerAdapter();
+
+		ArrayList<HttpMessageConverter<?>> converters = new ArrayList<HttpMessageConverter<?>>();
+		converters.add(getConverter());
+
+		adapter.setMessageConverters(converters);
+		return adapter;
+	}
+	
+	@Bean
+	public BasicDataSource getDataSource() {
+		BasicDataSource datasource = new BasicDataSource();
+		datasource.setDriverClassName(env.getProperty("mysql.driver_name"));
+		datasource.setUrl(env.getProperty("mysql.url"));
+		datasource.setUsername(env.getProperty("mysql.username"));
+		datasource.setPassword(env.getProperty("mysql.password"));
+		return datasource;
+	}
+}
